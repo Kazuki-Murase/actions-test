@@ -21,6 +21,7 @@ COPY app/testsp.php /var/www/html/secure
 RUN mkdir /tmp/patch
 COPY patch/* /tmp/patch/
 
+
 COPY shibboleth/partner-metadata.xml /etc/shibboleth/
 COPY etc/* /etc/
 
