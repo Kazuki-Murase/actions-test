@@ -65,14 +65,14 @@ jobs:
           # docker run -dti --rm ${line}
         done
         echo "::set-output name=arr::${arr[@]}"
-  #     env:
-  #       OUTPUT: ${{steps.arr.outputs.arr}}
-  #
-  # docker:
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       image: ${OUTPUT}
-  #   steps:
-  #     - name: Echo
-  #       run: echo ${{ matrix.image }}
+      env:
+        OUTPUT: ${{steps.arr.outputs.arr}}
+  
+  docker:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image: ${OUTPUT}
+    steps:
+      - name: Echo
+        run: echo ${{ matrix.image }}
