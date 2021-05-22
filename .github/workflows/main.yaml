@@ -64,7 +64,7 @@ jobs:
           # 確認のため
           # docker run -dti --rm ${line}
         done
-        echo ::set-output name=arr::${arr[@]}
+        echo "::set-output name=arr::${arr[@]}"
   #     env:
   #       OUTPUT: ${{steps.arr.outputs.arr}}
   #
