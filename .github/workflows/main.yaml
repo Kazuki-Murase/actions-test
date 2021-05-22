@@ -16,7 +16,7 @@ on:
     workflow_dispatch:
 
 jobs:
-  docker:
+  file:
     runs-on: ubuntu-latest
     steps:
     - name: checkout
@@ -28,6 +28,7 @@ jobs:
         # パイプ処理したいため、changed filesリストを改行区切りにする
         output: '\n'
     - name: docker_build
+      id: arr
       run: |
         #
         # ${{ steps.file_changes.outputs.files }}
@@ -43,6 +44,7 @@ jobs:
         #
         git config --global user.email "64388165+Kazuki-Murase@users.noreply.github.com"
         git config --global user.name "kazuki-murase"
+        arr=()
         echo -e "${{ steps.file_changes.outputs.files }}" | \
           awk '{sub("/.*", "");print $0;}' | \
           sort | \
@@ -56,7 +58,21 @@ jobs:
             continue
           fi
 
+          arr+=${line}
+
           # docker build -t ${line} ./${line}
           # 確認のため
           # docker run -dti --rm ${line}
         done
+        echo ::set-output name=arr::${arr[@]}
+      env:
+        OUTPUT: ${{steps.arr.outputs.arr}}
+
+  docker:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image: ${OUTPUT}
+    steps:
+      - name: Echo
+        run: echo ${{ matrix.image }}
