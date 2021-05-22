@@ -43,13 +43,46 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/${CACHE_IMAGE_NAME}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/${TEST_IMAGE_NAME}
 
-  hadolint:
+  # hadolint:
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - build
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         path: checkout
+  #     - name: Hadolint the Dockerfile
+  #       run: docker run --rm -i -v $PWD/checkout/.hadolint.yaml:/root/.config/hadolint.yaml hadolint/hadolint < checkout/Dockerfile
+
+  scan:
     runs-on: ubuntu-latest
     needs:
       - build
     steps:
       - uses: actions/checkout@v2
+      - name: pre-pull trivy image
+        id: pull
+        run: |
+          docker pull aquasec/trivy:latest
+          IMAGENAME=$(docker images aquasec/trivy:latest --no-trunc | awk '/aquasec\/trivy/{print $3}')
+          echo "::set-output name=IMAGENAME::${IMAGENAME}"
+      - uses: actions/cache@v2
         with:
-          path: checkout
-      - name: Hadolint the Dockerfile
-        run: docker run --rm -i -v $PWD/checkout/.hadolint.yaml:/root/.config/hadolint.yaml hadolint/hadolint < checkout/Dockerfile
+          path: |
+            .tryvy
+          key: 'trivy-${{ steps.pull.outputs.IMAGENAME }}'
+      - name: Scan image
+        run: |
+          mkdir -p $(PWD)/.trivy
+          echo "スキャン開始"
+          docker run --rm \
+            -e TRIVY_TIMEOUT_SEC=120s \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v ${PWD}/.trivy:/root/.cache \
+            aquasec/trivy:latest \
+              --exit-code 0 ${TRIVY_OPT} ${TEST_IMAGE_NAME}
+          echo "スキャン完了"
+      - name: 後処理
+        if: always()
+        run: |
+          docker run -v ${PWD}:/root busybox rm -fR /root/.trivy
