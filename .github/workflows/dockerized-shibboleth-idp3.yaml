@@ -2,10 +2,13 @@ name: Docker Build CI
 
 on:
   push:
-    branches: [main, feature-test]
-    tags: '*'
+    branches:
+    - 'main'
+    - 'feature-test'
   pull_request:
-    branches: [main, feature-test]
+    branches:
+    - 'main'
+    - 'feature-test'
   schedule:
     - cron '0 12 * * *'
   workflow_dispatch:
