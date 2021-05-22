@@ -66,7 +66,7 @@ jobs:
           # 確認のため
           # docker run -dti --rm ${line}
         done
-        IFS＝＄’,’
+        IFS＝’,’
         echo "::set-output name=arr::${arr[@]}"
 
   docker:
