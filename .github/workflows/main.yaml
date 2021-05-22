@@ -56,7 +56,7 @@ jobs:
             continue
           fi
 
-          docker build -t ${line} ./${line}
+          # docker build -t ${line} ./${line}
           # 確認のため
-          docker run -dti --rm ${line}
+          # docker run -dti --rm ${line}
         done

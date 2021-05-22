@@ -14,9 +14,9 @@ on:
   workflow_dispatch:
 
 env:
-  TEST_IMAGE_NAME: 'dockerized-shibboleth-idp3:${{ github.sha }}'
-  CACHE_IMAGE_NAME: 'dockerized-shibboleth-idp3:cache'
-  PUSH_IMAGE_NAME: 'dockerized-shibboleth-idp3'
+  TEST_IMAGE_NAME: 'laravel-k8s-sample:${{ github.sha }}'
+  CACHE_IMAGE_NAME: 'laravel-k8s-sample:cache'
+  PUSH_IMAGE_NAME: 'laravel-k8s-sample'
 
 jobs:
   build:
@@ -121,13 +121,3 @@ jobs:
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${TEST_IMAGE_NAME}
           docker tag "${{ secrets.DOCKERHUB_USERNAME }}/${TEST_IMAGE_NAME}" "${{ secrets.DOCKERHUB_USERNAME }}/${PUSH_IMAGE_NAME}"
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/${PUSH_IMAGE_NAME}
-
-  # test:
-  #   runs-on: ubuntu-latest
-  #   needs: 
-  #     - build
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #       with:
-  #         path: checkout
-  #     - name:
