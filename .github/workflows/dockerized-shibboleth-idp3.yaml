@@ -14,7 +14,9 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: 'dockerized-shibboleth-idp3'
+  TEST_IMAGE_NAME: 'dockerized-shibboleth-idp3:${{ github.sha }}'
+  CACHE_IMAGE_NAME: 'dockerized-shibboleth-idp3:cache'
+  PUSH_IMAGE_NAME: 'dockerized-shibboleth-idp3'
 
 jobs:
   build:
@@ -25,8 +27,8 @@ jobs:
         with:
           path: checkout
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+      # - name: Set up Docker Buildx
+      #   uses: docker/setup-buildx-action@v1
 
       - name: Login to Docker Hub
         uses: docker/login-action@v1
@@ -37,5 +39,6 @@ jobs:
       - name: Build the Docker image
         run: |
           cd checkout
-          docker build ./${IMAGE_NAME} -f ./${IMAGE_NAME}/Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/${IMAGE_NAME}
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${IMAGE_NAME}
+          docker build ./${PUSH_IMAGE_NAME} -f ./${PUSH_IMAGE_NAME}/Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/${TEST_IMAGE_NAME} --tag ${{ secrets.DOCKERHUB_USERNAME }}/${CACHE_IMAGE_NAME}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${CACHE_IMAGE_NAME}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${TEST_IMAGE_NAME}
