@@ -19,8 +19,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      IMAGE-NAME: dockerized-shibboleth-idp3
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -39,5 +37,5 @@ jobs:
       - name: Build the Docker image
         run: |
           cd checkout
-          docker build ./${IMAGE_NAME} -f ./${IMAGE_NAME}/Dockerfile --tag ${DOCKER_USERNAME}/${IMAGE_NAME}
-          docker push ${DOCKER_USERNAME}/${IMAGE_NAME}
+          docker build ./${IMAGE_NAME} -f ./${IMAGE_NAME}/Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/${IMAGE_NAME}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${IMAGE_NAME}
