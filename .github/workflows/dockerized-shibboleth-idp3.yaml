@@ -5,7 +5,7 @@ on:
     branches: [main, feature-test]
   pull_request:
     branches: [main, feature-test]
-  scedule:
+  schedule:
     - cron '0 12 * * *'
   workflow_dispatch:
 
