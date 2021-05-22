@@ -18,6 +18,8 @@ on:
 jobs:
   file:
     runs-on: ubuntu-latest
+    outputs:
+      images: ${{steps.arr.outputs.arr}}
     steps:
     - name: checkout
       uses: actions/checkout@v2
@@ -65,14 +67,12 @@ jobs:
           # docker run -dti --rm ${line}
         done
         echo "::set-output name=arr::${arr[@]}"
-      env:
-        OUTPUT: ${{steps.arr.outputs.arr}}
-  
+
   docker:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        image: ${OUTPUT}
+        image: ${{needs.file.outputs.images}}
     steps:
       - name: Echo
-        run: echo ${{ matrix.image }}
+        run: echo "${{ matrix.image }}"
