@@ -42,3 +42,12 @@ jobs:
           docker build ./${PUSH_IMAGE_NAME} -f ./${PUSH_IMAGE_NAME}/Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/${TEST_IMAGE_NAME} --tag ${{ secrets.DOCKERHUB_USERNAME }}/${CACHE_IMAGE_NAME}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/${CACHE_IMAGE_NAME}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/${TEST_IMAGE_NAME}
+
+  hadolint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: checkout
+      - name: Hadolint the Dockerfile
+        run: docker run --rm -i -v $PWD/checkout/.hadolint.yaml:/root/.config/hadolint.yaml hadolint/hadolint < checkout/Dockerfile
