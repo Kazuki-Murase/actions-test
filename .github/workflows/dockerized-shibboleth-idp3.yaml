@@ -10,9 +10,8 @@ on:
     - 'main'
     - 'feature-test'
   schedule:
-    - cron '0 12 * * *'
+    - cron: '0 12 * * *'
   workflow_dispatch:
-
 
 env:
   DOCKER_USERNAME: 'j041128'
