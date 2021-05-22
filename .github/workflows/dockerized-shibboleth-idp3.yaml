@@ -3,6 +3,7 @@ name: Docker Build CI
 on:
   push:
     branches: [main, feature-test]
+    tags: '*'
   pull_request:
     branches: [main, feature-test]
   schedule:
