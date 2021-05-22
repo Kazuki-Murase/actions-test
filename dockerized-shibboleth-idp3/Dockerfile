@@ -1,8 +1,7 @@
 FROM centos:centos7
 
 # Shibboleth SPモジュールその他必要なものをインストールする。
-RUN yum -y update \
-    && yum -y install wget patch \
+RUN yum -y install wget patch \
     && wget http://download.opensuse.org/repositories/security://shibboleth/CentOS_7/security:shibboleth.repo -P /etc/yum.repos.d \
     && yum -y install httpd shibboleth-3.1.0-3.1 mod_ssl php policycoreutils selinux-policy-targeted \
     && yum -y install http://dev.mysql.com/get/mysql57-community-release-el7-8.noarch.rpm \
