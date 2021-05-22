@@ -4,20 +4,19 @@ on:
   push:
     branches:
     - 'main'
-    - 'feature-first'
+    - 'feature-test'
     paths-ignore:
     # 他のファイルも含めて変更があった場合はactionが動作してしまうので、
     # 以下がdocker buildの対象にならないようにstepsでチェックする
     - '.github/**'
     - 'README.md'
 
+jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
     - name: checkout
       uses: actions/checkout@v2
-      with:
-        token: ${{ secrets.GITHUB_API_TOKEN }}
     - id: file_changes
       # changed filesをリスト化してくれるモジュール
       uses: trilom/file-changes-action@v1.2.4
