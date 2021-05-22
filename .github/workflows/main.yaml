@@ -9,6 +9,7 @@ on:
     # 他のファイルも含めて変更があった場合はactionが動作してしまうので、
     # 以下がdocker buildの対象にならないようにstepsでチェックする
     - '.github/**'
+    - '!.github/workflows/**'
     - 'README.md'
     schedule:
     - cron: '0 12 * * *'
