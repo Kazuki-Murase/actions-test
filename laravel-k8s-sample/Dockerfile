@@ -28,6 +28,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
+
 # setting up apps
 COPY ./tls /etc/tls
 COPY ./nginx.conf /etc/nginx/nginx.conf
