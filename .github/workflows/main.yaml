@@ -58,5 +58,5 @@ jobs:
 
           docker build -t ${line} ./${line}
           # 確認のため
-          docker run --rm ${line}
+          docker run -dti --rm ${line}
         done
