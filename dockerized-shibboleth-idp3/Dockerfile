@@ -35,5 +35,6 @@ COPY bin/init-sp.sh /usr/local/bin/
 RUN chmod 750 /usr/local/bin/init-sp.sh && \
     /usr/local/bin/init-sp.sh
 
+
 # Shibboleth SPモジュールを起動する。
 CMD ["/usr/local/bin/httpd-shibd-foreground"]

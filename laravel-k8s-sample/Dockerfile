@@ -42,6 +42,7 @@ RUN find ./vendor -iname tests -type d | xargs rm -rf \
 
 COPY ./run.sh /usr/local/bin/run.sh
 
+
 RUN chown nginx:nginx storage/logs \
     && sed -i 's/www-data/nginx/g' /usr/local/etc/php-fpm.d/www.conf \
     && chown -R nginx:nginx storage/framework \
