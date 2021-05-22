@@ -74,9 +74,7 @@ jobs:
     needs: file
     strategy:
       matrix:
-        include:
-          - image: "dockerized-shibboleth-idp3"
-          - image: "laravel-k8s-sample"
+        image: [dockerized-shibboleth-idp3,laravel-k8s-sample]
     if: contains(fromJson(needs.file.outputs.images), matrix.image) == true
     steps:
       - name: Echo
