@@ -73,7 +73,7 @@ jobs:
           key: 'trivy-${{ steps.pull.outputs.IMAGENAME }}'
       - name: Scan image
         run: |
-          mkdir -p $(PWD)/.trivy
+          mkdir -p ${PWD}/.trivy
           echo "スキャン開始"
           docker run --rm \
             -e TRIVY_TIMEOUT_SEC=120s \
