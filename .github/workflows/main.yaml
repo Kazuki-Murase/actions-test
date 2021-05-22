@@ -75,7 +75,7 @@ jobs:
     strategy:
       matrix:
         image: [dockerized-shibboleth-idp3,laravel-k8s-sample]
-    if: contains(fromJson(needs.file.outputs.images), matrix.image) == true
+    if: contains(fromJson(needs.file.outputs.images), matrix.image)
     steps:
       - name: Echo
         run: echo "${{ matrix.image }}"
