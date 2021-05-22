@@ -60,12 +60,13 @@ jobs:
             continue
           fi
 
-          arr+=("${line}")
+          arr+=(${line})
 
           # docker build -t ${line} ./${line}
           # 確認のため
           # docker run -dti --rm ${line}
         done
+        IFS＝＄’,’
         echo "::set-output name=arr::${arr[@]}"
 
   docker:
