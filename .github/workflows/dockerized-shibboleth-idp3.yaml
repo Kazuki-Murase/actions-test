@@ -155,7 +155,7 @@ jobs:
           do
             sleep 3
             curl -L --head http://localhost:8080 | grep "HTTP/1.1 200 OK" && exit 0
-            ${{ github.workspace }}docker-compose logs test
+            ${{ github.workspace }}/docker-compose logs test
             count=$((++count))
           done
           exit 1
