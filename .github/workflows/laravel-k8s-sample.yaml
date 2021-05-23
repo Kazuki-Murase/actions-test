@@ -43,16 +43,16 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/${CACHE_IMAGE_NAME}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/${TEST_IMAGE_NAME}
 
-  # hadolint:
-  #   runs-on: ubuntu-latest
-  #   needs:
-  #     - build
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #       with:
-  #         path: checkout
-  #     - name: Hadolint the Dockerfile
-  #       run: docker run --rm -i -v ${PWD}/checkout/.hadolint.yaml:/root/.config/hadolint.yaml hadolint/hadolint < checkout/${PUSH_IMAGE_NAME}/Dockerfile
+  hadolint:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: checkout
+      - name: Hadolint the Dockerfile
+        run: docker run --rm -i -v ${PWD}/checkout/.hadolint.yaml:/root/.config/hadolint.yaml hadolint/hadolint < checkout/${PUSH_IMAGE_NAME}/Dockerfile
 
   scan:
     runs-on: ubuntu-latest
@@ -150,7 +150,7 @@ jobs:
           # docker-compose.yml にあるテストイメージをロードされたイメージ名に合わせます。
           sed -i "s|TEST_IMAGE_NAME|${{ secrets.DOCKERHUB_USERNAME }}/${TEST_IMAGE_NAME}|g" docker-compose.yml
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${TEST_IMAGE_NAME}
-          ${{ github.workspace }}/docker-compose up -d
+          ${{ github.workspace }}/docker-compose up -dt
           while [ $count -lt $MAX_RETRY ]
           do
             sleep 3
