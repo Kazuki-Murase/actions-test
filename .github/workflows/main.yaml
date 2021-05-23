@@ -26,56 +26,56 @@ jobs:
     - id: file_changes
       # changed filesをリスト化してくれるモジュール
       uses: trilom/file-changes-action@v1.2.4
-    #   with:
-    #     # パイプ処理したいため、changed filesリストを改行区切りにする
-    #     output: '\n'
-    # - name: docker_build
-    #   id: arr
-    #   run: |
-    #     #
-    #     # ${{ steps.file_changes.outputs.files }}
-    #     # ↓
-    #     # hello/Dockerfile
-    #     # hello/hello.sh
-    #     # world/world.sh
-    #     # .github/workflows/main.yaml
-    #     # ↓
-    #     # hello
-    #     # world
-    #     # .github
-    #     #
-    #     git config --global user.email "64388165+Kazuki-Murase@users.noreply.github.com"
-    #     git config --global user.name "kazuki-murase"
-    #     arr=()
-    #     echo -e "${{ steps.file_changes.outputs.files }}" | \
-    #       awk '{sub("/.*", "");print $0;}' | \
-    #       sort | \
-    #       uniq | \
-    #     while read line
-    #     do
-    #       echo "##### docker build -> ${line} #####"
-    #       if [ ! -e ./${line}/Dockerfile ]; then
-    #         # .githubとREADME.mdはこのロジックに入る
-    #         echo "./${line}/Dockerfile not exists"
-    #         continue
-    #       fi
-    #
-    #       arr+=(${line})
-    #
-    #       # docker build -t ${line} ./${line}
-    #       # 確認のため
-    #       # docker run -dti --rm ${line}
-    #     done
-    #     IFS＝’,’
-    #     echo "::set-output name=arr::${arr[@]}"
+      with:
+        # パイプ処理したいため、changed filesリストを改行区切りにする
+        output: '\n'
+    - name: docker_build
+      id: arr
+      run: |
+        #
+        # ${{ steps.file_changes.outputs.files }}
+        # ↓
+        # hello/Dockerfile
+        # hello/hello.sh
+        # world/world.sh
+        # .github/workflows/main.yaml
+        # ↓
+        # hello
+        # world
+        # .github
+        #
+        git config --global user.email "64388165+Kazuki-Murase@users.noreply.github.com"
+        git config --global user.name "kazuki-murase"
+        arr=()
+        echo -e "${{ steps.file_changes.outputs.files }}" | \
+          awk '{sub("/.*", "");print $0;}' | \
+          sort | \
+          uniq | \
+        while read line
+        do
+          echo "##### docker build -> ${line} #####"
+          if [ ! -e ./${line}/Dockerfile ]; then
+            # .githubとREADME.mdはこのロジックに入る
+            echo "./${line}/Dockerfile not exists"
+            continue
+          fi
 
-  docker:
-    runs-on: ubuntu-latest
-    needs: file
-    strategy:
-      matrix:
-        image: [dockerized-shibboleth-idp3,laravel-k8s-sample]
-    if: contains(fromJson(needs.file.outputs.images), matrix.image)
-    steps:
-      - name: Echo
-        run: echo "${{ matrix.image }}"
+          arr+=(${line})
+
+          # docker build -t ${line} ./${line}
+          # 確認のため
+          # docker run -dti --rm ${line}
+        done
+  #       IFS＝’,’
+  #       echo "::set-output name=arr::${arr[@]}"
+  #
+  # docker:
+  #   runs-on: ubuntu-latest
+  #   needs: file
+  #   strategy:
+  #     matrix:
+  #       image: [dockerized-shibboleth-idp3,laravel-k8s-sample]
+  #   if: contains(fromJson(needs.file.outputs.images), matrix.image)
+  #   steps:
+  #     - name: Echo
+  #       run: echo "${{ matrix.image }}"

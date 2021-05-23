@@ -1,0 +1,9 @@
+# for ci-test
+version: '3.1'
+services:
+  test:
+    image: TEST_IMAGE_NAME
+    restart: always
+    # environment:
+    ports:
+      - 8080:8080
