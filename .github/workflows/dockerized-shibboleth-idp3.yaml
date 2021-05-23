@@ -149,8 +149,8 @@ jobs:
           cd checkout
           # docker-compose.yml にあるテストイメージをロードされたイメージ名に合わせます。
           sed -i "s|TEST_IMAGE_NAME|${{ secrets.DOCKERHUB_USERNAME }}/${TEST_IMAGE_NAME}|g" docker-compose.yml
-          docker pull -d ${{ secrets.DOCKERHUB_USERNAME }}/${TEST_IMAGE_NAME}
-          ${{ github.workspace }}/docker-compose up -d
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${TEST_IMAGE_NAME}
+          ${{ github.workspace }}/docker-compose up -d -t
           while [ $count -lt $MAX_RETRY ]
           do
             sleep 3
