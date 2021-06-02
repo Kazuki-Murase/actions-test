@@ -18,6 +18,7 @@ env:
   CACHE_IMAGE_NAME: 'dockerized-shibboleth-idp3:cache'
   PUSH_IMAGE_NAME: 'dockerized-shibboleth-idp3'
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
