@@ -1,0 +1,29 @@
+name: test
+
+on:
+  push:
+    branches:
+    - 'main'
+    - 'feature-test'
+  pull_request:
+    branches:
+    - 'main'
+    - 'feature-test'
+  schedule:
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+
+env:
+  TEST_IMAGE_NAME: 'laravel-k8s-sample:${{ github.sha }}'
+  CACHE_IMAGE_NAME: 'laravel-k8s-sample:cache'
+  PUSH_IMAGE_NAME: 'laravel-k8s-sample'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build the Docker image
+        run: |
+          ls
+          cd checkout
+          ls
